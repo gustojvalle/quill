@@ -779,7 +779,7 @@ var _parchment = __webpack_require__(0);
 
 var _parchment2 = _interopRequireDefault(_parchment);
 
-var _break = __webpack_require__(17);
+var _break = __webpack_require__(16);
 
 var _break2 = _interopRequireDefault(_break);
 
@@ -1033,7 +1033,7 @@ var _quillDelta = __webpack_require__(2);
 
 var _quillDelta2 = _interopRequireDefault(_quillDelta);
 
-var _editor = __webpack_require__(15);
+var _editor = __webpack_require__(14);
 
 var _editor2 = _interopRequireDefault(_editor);
 
@@ -1049,7 +1049,7 @@ var _parchment = __webpack_require__(0);
 
 var _parchment2 = _interopRequireDefault(_parchment);
 
-var _selection = __webpack_require__(16);
+var _selection = __webpack_require__(15);
 
 var _selection2 = _interopRequireDefault(_selection);
 
@@ -2302,208 +2302,6 @@ module.exports = defineProperties;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = exports.Code = undefined;
-
-var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
-
-var _quillDelta = __webpack_require__(2);
-
-var _quillDelta2 = _interopRequireDefault(_quillDelta);
-
-var _parchment = __webpack_require__(0);
-
-var _parchment2 = _interopRequireDefault(_parchment);
-
-var _block = __webpack_require__(4);
-
-var _block2 = _interopRequireDefault(_block);
-
-var _inline = __webpack_require__(6);
-
-var _inline2 = _interopRequireDefault(_inline);
-
-var _text = __webpack_require__(7);
-
-var _text2 = _interopRequireDefault(_text);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var Code = function (_Inline) {
-  _inherits(Code, _Inline);
-
-  function Code() {
-    _classCallCheck(this, Code);
-
-    return _possibleConstructorReturn(this, (Code.__proto__ || Object.getPrototypeOf(Code)).apply(this, arguments));
-  }
-
-  return Code;
-}(_inline2.default);
-
-Code.blotName = 'code';
-Code.tagName = 'CODE';
-
-var CodeBlock = function (_Block) {
-  _inherits(CodeBlock, _Block);
-
-  function CodeBlock() {
-    _classCallCheck(this, CodeBlock);
-
-    return _possibleConstructorReturn(this, (CodeBlock.__proto__ || Object.getPrototypeOf(CodeBlock)).apply(this, arguments));
-  }
-
-  _createClass(CodeBlock, [{
-    key: 'delta',
-    value: function delta() {
-      var _this3 = this;
-
-      var text = this.domNode.textContent;
-      if (text.endsWith('\n')) {
-        // Should always be true
-        text = text.slice(0, -1);
-      }
-      return text.split('\n').reduce(function (delta, frag) {
-        return delta.insert(frag).insert('\n', _this3.formats());
-      }, new _quillDelta2.default());
-    }
-  }, {
-    key: 'format',
-    value: function format(name, value) {
-      if (name === this.statics.blotName && value) return;
-
-      var _descendant = this.descendant(_text2.default, this.length() - 1),
-          _descendant2 = _slicedToArray(_descendant, 1),
-          text = _descendant2[0];
-
-      if (text != null) {
-        text.deleteAt(text.length() - 1, 1);
-      }
-      _get(CodeBlock.prototype.__proto__ || Object.getPrototypeOf(CodeBlock.prototype), 'format', this).call(this, name, value);
-    }
-  }, {
-    key: 'formatAt',
-    value: function formatAt(index, length, name, value) {
-      if (length === 0) return;
-      if (_parchment2.default.query(name, _parchment2.default.Scope.BLOCK) == null || name === this.statics.blotName && value === this.statics.formats(this.domNode)) {
-        return;
-      }
-      var nextNewline = this.newlineIndex(index);
-      if (nextNewline < 0 || nextNewline >= index + length) return;
-      var prevNewline = this.newlineIndex(index, true) + 1;
-      var isolateLength = nextNewline - prevNewline + 1;
-      var blot = this.isolate(prevNewline, isolateLength);
-      var next = blot.next;
-      blot.format(name, value);
-      if (next instanceof CodeBlock) {
-        next.formatAt(0, index - prevNewline + length - isolateLength, name, value);
-      }
-    }
-  }, {
-    key: 'insertAt',
-    value: function insertAt(index, value, def) {
-      if (def != null) return;
-
-      var _descendant3 = this.descendant(_text2.default, index),
-          _descendant4 = _slicedToArray(_descendant3, 2),
-          text = _descendant4[0],
-          offset = _descendant4[1];
-
-      text.insertAt(offset, value);
-    }
-  }, {
-    key: 'length',
-    value: function length() {
-      var length = this.domNode.textContent.length;
-      if (!this.domNode.textContent.endsWith('\n')) {
-        return length + 1;
-      }
-      return length;
-    }
-  }, {
-    key: 'newlineIndex',
-    value: function newlineIndex(searchIndex) {
-      var reverse = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-
-      if (!reverse) {
-        var offset = this.domNode.textContent.slice(searchIndex).indexOf('\n');
-        return offset > -1 ? searchIndex + offset : -1;
-      } else {
-        return this.domNode.textContent.slice(0, searchIndex).lastIndexOf('\n');
-      }
-    }
-  }, {
-    key: 'optimize',
-    value: function optimize(context) {
-      if (!this.domNode.textContent.endsWith('\n')) {
-        this.appendChild(_parchment2.default.create('text', '\n'));
-      }
-      _get(CodeBlock.prototype.__proto__ || Object.getPrototypeOf(CodeBlock.prototype), 'optimize', this).call(this, context);
-      var next = this.next;
-      if (next != null && next.prev === this && next.statics.blotName === this.statics.blotName && this.statics.formats(this.domNode) === next.statics.formats(next.domNode)) {
-        next.optimize(context);
-        next.moveChildren(this);
-        next.remove();
-      }
-    }
-  }, {
-    key: 'replace',
-    value: function replace(target) {
-      _get(CodeBlock.prototype.__proto__ || Object.getPrototypeOf(CodeBlock.prototype), 'replace', this).call(this, target);
-      [].slice.call(this.domNode.querySelectorAll('*')).forEach(function (node) {
-        var blot = _parchment2.default.find(node);
-        if (blot == null) {
-          node.parentNode.removeChild(node);
-        } else if (blot instanceof _parchment2.default.Embed) {
-          blot.remove();
-        } else {
-          blot.unwrap();
-        }
-      });
-    }
-  }], [{
-    key: 'create',
-    value: function create(value) {
-      var domNode = _get(CodeBlock.__proto__ || Object.getPrototypeOf(CodeBlock), 'create', this).call(this, value);
-      domNode.setAttribute('spellcheck', false);
-      return domNode;
-    }
-  }, {
-    key: 'formats',
-    value: function formats() {
-      return true;
-    }
-  }]);
-
-  return CodeBlock;
-}(_block2.default);
-
-CodeBlock.blotName = 'code-block';
-CodeBlock.tagName = 'PRE';
-CodeBlock.TAB = '  ';
-
-exports.Code = Code;
-exports.default = CodeBlock;
-
-/***/ }),
-/* 15 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
@@ -2523,7 +2321,7 @@ var _parchment = __webpack_require__(0);
 
 var _parchment2 = _interopRequireDefault(_parchment);
 
-var _code = __webpack_require__(14);
+var _code = __webpack_require__(17);
 
 var _code2 = _interopRequireDefault(_code);
 
@@ -2535,7 +2333,7 @@ var _block = __webpack_require__(4);
 
 var _block2 = _interopRequireDefault(_block);
 
-var _break = __webpack_require__(17);
+var _break = __webpack_require__(16);
 
 var _break2 = _interopRequireDefault(_break);
 
@@ -2863,7 +2661,7 @@ function normalizeDelta(delta) {
 exports.default = Editor;
 
 /***/ }),
-/* 16 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2879,8 +2677,6 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _parchment = __webpack_require__(0);
-
-var _parchment2 = _interopRequireDefault(_parchment);
 
 var _clone = __webpack_require__(26);
 
@@ -2926,19 +2722,15 @@ var Selection = function () {
     this.composing = false;
     this.mouseDown = false;
     this.root = this.scroll.domNode;
-    this.cursor = _parchment2.default.create('cursor', this);
+    this.cursor = this.scroll.create('cursor', this);
     // savedRange is last non-null range
-    this.lastRange = this.savedRange = new Range(0, 0);
+    this.savedRange = new Range(0, 0);
+    this.lastRange = this.savedRange;
     this.handleComposition();
     this.handleDragging();
     this.emitter.listenDOM('selectionchange', document, function () {
-      if (!_this.mouseDown) {
+      if (!_this.mouseDown && !_this.composing) {
         setTimeout(_this.update.bind(_this, _emitter4.default.sources.USER), 1);
-      }
-    });
-    this.emitter.on(_emitter4.default.events.EDITOR_CHANGE, function (type, delta) {
-      if (type === _emitter4.default.events.TEXT_CHANGE && delta.length() > 0) {
-        _this.update(_emitter4.default.sources.SILENT);
       }
     });
     this.emitter.on(_emitter4.default.events.SCROLL_BEFORE_UPDATE, function () {
@@ -2946,11 +2738,15 @@ var Selection = function () {
       var native = _this.getNativeRange();
       if (native == null) return;
       if (native.start.node === _this.cursor.textNode) return; // cursor.restore() will handle
-      // TODO unclear if this has negative side effects
       _this.emitter.once(_emitter4.default.events.SCROLL_UPDATE, function () {
         try {
-          _this.setNativeRange(native.start.node, native.start.offset, native.end.node, native.end.offset);
-        } catch (ignored) {}
+          if (_this.root.contains(native.start.node) && _this.root.contains(native.end.node)) {
+            _this.setNativeRange(native.start.node, native.start.offset, native.end.node, native.end.offset);
+          }
+          _this.update(_emitter4.default.sources.SILENT);
+        } catch (ignored) {
+          // ignore
+        }
       });
     });
     this.emitter.on(_emitter4.default.events.SCROLL_OPTIMIZE, function (mutations, context) {
@@ -2962,6 +2758,7 @@ var Selection = function () {
             endOffset = _context$range.endOffset;
 
         _this.setNativeRange(startNode, startOffset, endNode, endOffset);
+        _this.update(_emitter4.default.sources.SILENT);
       }
     });
     this.update(_emitter4.default.sources.SILENT);
@@ -2974,8 +2771,10 @@ var Selection = function () {
 
       this.root.addEventListener('compositionstart', function () {
         _this2.composing = true;
+        _this2.scroll.batchStart();
       });
       this.root.addEventListener('compositionend', function () {
+        _this2.scroll.batchEnd();
         _this2.composing = false;
         if (_this2.cursor.parent) {
           var range = _this2.cursor.restore();
@@ -3009,15 +2808,14 @@ var Selection = function () {
   }, {
     key: 'format',
     value: function format(_format, value) {
-      if (this.scroll.whitelist != null && !this.scroll.whitelist[_format]) return;
       this.scroll.update();
       var nativeRange = this.getNativeRange();
-      if (nativeRange == null || !nativeRange.native.collapsed || _parchment2.default.query(_format, _parchment2.default.Scope.BLOCK)) return;
+      if (nativeRange == null || !nativeRange.native.collapsed || this.scroll.query(_format, _parchment.Scope.BLOCK)) return;
       if (nativeRange.start.node !== this.cursor.textNode) {
-        var blot = _parchment2.default.find(nativeRange.start.node, false);
+        var blot = this.scroll.find(nativeRange.start.node, false);
         if (blot == null) return;
         // TODO Give blot ability to not split
-        if (blot instanceof _parchment2.default.Leaf) {
+        if (blot instanceof _parchment.LeafBlot) {
           var after = blot.split(nativeRange.start.offset);
           blot.parent.insertBefore(this.cursor, after);
         } else {
@@ -3038,11 +2836,13 @@ var Selection = function () {
       var scrollLength = this.scroll.length();
       index = Math.min(index, scrollLength - 1);
       length = Math.min(index + length, scrollLength - 1) - index;
-      var node = void 0,
-          _scroll$leaf = this.scroll.leaf(index),
+      var node = void 0;
+
+      var _scroll$leaf = this.scroll.leaf(index),
           _scroll$leaf2 = _slicedToArray(_scroll$leaf, 2),
           leaf = _scroll$leaf2[0],
           offset = _scroll$leaf2[1];
+
       if (leaf == null) return null;
 
       var _leaf$position = leaf.position(offset, true);
@@ -3074,32 +2874,31 @@ var Selection = function () {
 
         range.setEnd(node, offset);
         return range.getBoundingClientRect();
-      } else {
-        var side = 'left';
-        var rect = void 0;
-        if (node instanceof Text) {
-          if (offset < node.data.length) {
-            range.setStart(node, offset);
-            range.setEnd(node, offset + 1);
-          } else {
-            range.setStart(node, offset - 1);
-            range.setEnd(node, offset);
-            side = 'right';
-          }
-          rect = range.getBoundingClientRect();
-        } else {
-          rect = leaf.domNode.getBoundingClientRect();
-          if (offset > 0) side = 'right';
-        }
-        return {
-          bottom: rect.top + rect.height,
-          height: rect.height,
-          left: rect[side],
-          right: rect[side],
-          top: rect.top,
-          width: 0
-        };
       }
+      var side = 'left';
+      var rect = void 0;
+      if (node instanceof Text) {
+        if (offset < node.data.length) {
+          range.setStart(node, offset);
+          range.setEnd(node, offset + 1);
+        } else {
+          range.setStart(node, offset - 1);
+          range.setEnd(node, offset);
+          side = 'right';
+        }
+        rect = range.getBoundingClientRect();
+      } else {
+        rect = leaf.domNode.getBoundingClientRect();
+        if (offset > 0) side = 'right';
+      }
+      return {
+        bottom: rect.top + rect.height,
+        height: rect.height,
+        left: rect[side],
+        right: rect[side],
+        top: rect.top,
+        width: 0
+      };
     }
   }, {
     key: 'getNativeRange',
@@ -3123,7 +2922,7 @@ var Selection = function () {
   }, {
     key: 'hasFocus',
     value: function hasFocus() {
-      return document.activeElement === this.root;
+      return document.activeElement === this.root || contains(this.root, document.activeElement);
     }
   }, {
     key: 'normalizedToRange',
@@ -3139,15 +2938,15 @@ var Selection = function () {
             node = _position[0],
             offset = _position[1];
 
-        var blot = _parchment2.default.find(node, true);
+        var blot = _this4.scroll.find(node, true);
         var index = blot.offset(_this4.scroll);
         if (offset === 0) {
           return index;
-        } else if (blot instanceof _parchment2.default.Container) {
-          return index + blot.length();
-        } else {
+        }
+        if (blot instanceof _parchment.LeafBlot) {
           return index + blot.index(node, offset);
         }
+        return index + blot.length();
       });
       var end = Math.min(Math.max.apply(Math, _toConsumableArray(indexes)), this.scroll.length() - 1);
       var start = Math.min.apply(Math, [end].concat(_toConsumableArray(indexes)));
@@ -3160,25 +2959,38 @@ var Selection = function () {
         return null;
       }
       var range = {
-        start: { node: nativeRange.startContainer, offset: nativeRange.startOffset },
+        start: {
+          node: nativeRange.startContainer,
+          offset: nativeRange.startOffset
+        },
         end: { node: nativeRange.endContainer, offset: nativeRange.endOffset },
         native: nativeRange
       };
       [range.start, range.end].forEach(function (position) {
         var node = position.node,
             offset = position.offset;
+
         while (!(node instanceof Text) && node.childNodes.length > 0) {
           if (node.childNodes.length > offset) {
             node = node.childNodes[offset];
             offset = 0;
           } else if (node.childNodes.length === offset) {
             node = node.lastChild;
-            offset = node instanceof Text ? node.data.length : node.childNodes.length + 1;
+            if (node instanceof Text) {
+              offset = node.data.length;
+            } else if (node.childNodes.length > 0) {
+              // Container case
+              offset = node.childNodes.length;
+            } else {
+              // Embed case
+              offset = node.childNodes.length + 1;
+            }
           } else {
             break;
           }
         }
-        position.node = node, position.offset = offset;
+        position.node = node;
+        position.offset = offset;
       });
       return range;
     }
@@ -3192,22 +3004,21 @@ var Selection = function () {
       var scrollLength = this.scroll.length();
       indexes.forEach(function (index, i) {
         index = Math.min(scrollLength - 1, index);
-        var node = void 0,
-            _scroll$leaf5 = _this5.scroll.leaf(index),
+
+        var _scroll$leaf5 = _this5.scroll.leaf(index),
             _scroll$leaf6 = _slicedToArray(_scroll$leaf5, 2),
             leaf = _scroll$leaf6[0],
-            offset = _scroll$leaf6[1];
-        var _leaf$position5 = leaf.position(offset, i !== 0);
+            leafOffset = _scroll$leaf6[1];
 
-        var _leaf$position6 = _slicedToArray(_leaf$position5, 2);
-
-        node = _leaf$position6[0];
-        offset = _leaf$position6[1];
+        var _leaf$position5 = leaf.position(leafOffset, i !== 0),
+            _leaf$position6 = _slicedToArray(_leaf$position5, 2),
+            node = _leaf$position6[0],
+            offset = _leaf$position6[1];
 
         args.push(node, offset);
       });
       if (args.length < 2) {
-        args = args.concat(args);
+        return args.concat(args);
       }
       return args;
     }
@@ -3255,15 +3066,17 @@ var Selection = function () {
       if (selection == null) return;
       if (startNode != null) {
         if (!this.hasFocus()) this.root.focus();
-        var native = (this.getNativeRange() || {}).native;
-        if (native == null || force || startNode !== native.startContainer || startOffset !== native.startOffset || endNode !== native.endContainer || endOffset !== native.endOffset) {
 
-          if (startNode.tagName == "BR") {
-            startOffset = [].indexOf.call(startNode.parentNode.childNodes, startNode);
+        var _ref = this.getNativeRange() || {},
+            native = _ref.native;
+
+        if (native == null || force || startNode !== native.startContainer || startOffset !== native.startOffset || endNode !== native.endContainer || endOffset !== native.endOffset) {
+          if (startNode.tagName === 'BR') {
+            startOffset = Array.from(startNode.parentNode.childNodes).indexOf(startNode);
             startNode = startNode.parentNode;
           }
-          if (endNode.tagName == "BR") {
-            endOffset = [].indexOf.call(endNode.parentNode.childNodes, endNode);
+          if (endNode.tagName === 'BR') {
+            endOffset = Array.from(endNode.parentNode.childNodes).indexOf(endNode);
             endNode = endNode.parentNode;
           }
           var range = document.createRange();
@@ -3275,7 +3088,6 @@ var Selection = function () {
       } else {
         selection.removeAllRanges();
         this.root.blur();
-        document.body.focus(); // root.blur() not enough on IE11+Travis+SauceLabs (but not local VMs)
       }
     }
   }, {
@@ -3317,7 +3129,10 @@ var Selection = function () {
         var _emitter;
 
         if (!this.composing && nativeRange != null && nativeRange.native.collapsed && nativeRange.start.node !== this.cursor.textNode) {
-          this.cursor.restore();
+          var range = this.cursor.restore();
+          if (range) {
+            this.setNativeRange(range.startNode, range.startOffset, range.endNode, range.endOffset);
+          }
         }
         var args = [_emitter4.default.events.SELECTION_CHANGE, (0, _clone2.default)(this.lastRange), (0, _clone2.default)(oldRange), source];
         (_emitter = this.emitter).emit.apply(_emitter, [_emitter4.default.events.EDITOR_CHANGE].concat(args));
@@ -3336,14 +3151,9 @@ var Selection = function () {
 function contains(parent, descendant) {
   try {
     // Firefox inserts inaccessible nodes around video elements
-    descendant.parentNode;
+    descendant.parentNode; // eslint-disable-line no-unused-expressions
   } catch (e) {
     return false;
-  }
-  // IE11 has bug with Text nodes
-  // https://connect.microsoft.com/IE/feedback/details/780874/node-contains-is-incorrect
-  if (descendant instanceof Text) {
-    descendant = descendant.parentNode;
   }
   return parent.contains(descendant);
 }
@@ -3352,7 +3162,7 @@ exports.Range = Range;
 exports.default = Selection;
 
 /***/ }),
-/* 17 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3420,6 +3230,208 @@ Break.blotName = 'break';
 Break.tagName = 'BR';
 
 exports.default = Break;
+
+/***/ }),
+/* 17 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = exports.Code = undefined;
+
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+var _quillDelta = __webpack_require__(2);
+
+var _quillDelta2 = _interopRequireDefault(_quillDelta);
+
+var _parchment = __webpack_require__(0);
+
+var _parchment2 = _interopRequireDefault(_parchment);
+
+var _block = __webpack_require__(4);
+
+var _block2 = _interopRequireDefault(_block);
+
+var _inline = __webpack_require__(6);
+
+var _inline2 = _interopRequireDefault(_inline);
+
+var _text = __webpack_require__(7);
+
+var _text2 = _interopRequireDefault(_text);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Code = function (_Inline) {
+  _inherits(Code, _Inline);
+
+  function Code() {
+    _classCallCheck(this, Code);
+
+    return _possibleConstructorReturn(this, (Code.__proto__ || Object.getPrototypeOf(Code)).apply(this, arguments));
+  }
+
+  return Code;
+}(_inline2.default);
+
+Code.blotName = 'code';
+Code.tagName = 'CODE';
+
+var CodeBlock = function (_Block) {
+  _inherits(CodeBlock, _Block);
+
+  function CodeBlock() {
+    _classCallCheck(this, CodeBlock);
+
+    return _possibleConstructorReturn(this, (CodeBlock.__proto__ || Object.getPrototypeOf(CodeBlock)).apply(this, arguments));
+  }
+
+  _createClass(CodeBlock, [{
+    key: 'delta',
+    value: function delta() {
+      var _this3 = this;
+
+      var text = this.domNode.textContent;
+      if (text.endsWith('\n')) {
+        // Should always be true
+        text = text.slice(0, -1);
+      }
+      return text.split('\n').reduce(function (delta, frag) {
+        return delta.insert(frag).insert('\n', _this3.formats());
+      }, new _quillDelta2.default());
+    }
+  }, {
+    key: 'format',
+    value: function format(name, value) {
+      if (name === this.statics.blotName && value) return;
+
+      var _descendant = this.descendant(_text2.default, this.length() - 1),
+          _descendant2 = _slicedToArray(_descendant, 1),
+          text = _descendant2[0];
+
+      if (text != null) {
+        text.deleteAt(text.length() - 1, 1);
+      }
+      _get(CodeBlock.prototype.__proto__ || Object.getPrototypeOf(CodeBlock.prototype), 'format', this).call(this, name, value);
+    }
+  }, {
+    key: 'formatAt',
+    value: function formatAt(index, length, name, value) {
+      if (length === 0) return;
+      if (_parchment2.default.query(name, _parchment2.default.Scope.BLOCK) == null || name === this.statics.blotName && value === this.statics.formats(this.domNode)) {
+        return;
+      }
+      var nextNewline = this.newlineIndex(index);
+      if (nextNewline < 0 || nextNewline >= index + length) return;
+      var prevNewline = this.newlineIndex(index, true) + 1;
+      var isolateLength = nextNewline - prevNewline + 1;
+      var blot = this.isolate(prevNewline, isolateLength);
+      var next = blot.next;
+      blot.format(name, value);
+      if (next instanceof CodeBlock) {
+        next.formatAt(0, index - prevNewline + length - isolateLength, name, value);
+      }
+    }
+  }, {
+    key: 'insertAt',
+    value: function insertAt(index, value, def) {
+      if (def != null) return;
+
+      var _descendant3 = this.descendant(_text2.default, index),
+          _descendant4 = _slicedToArray(_descendant3, 2),
+          text = _descendant4[0],
+          offset = _descendant4[1];
+
+      text.insertAt(offset, value);
+    }
+  }, {
+    key: 'length',
+    value: function length() {
+      var length = this.domNode.textContent.length;
+      if (!this.domNode.textContent.endsWith('\n')) {
+        return length + 1;
+      }
+      return length;
+    }
+  }, {
+    key: 'newlineIndex',
+    value: function newlineIndex(searchIndex) {
+      var reverse = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
+      if (!reverse) {
+        var offset = this.domNode.textContent.slice(searchIndex).indexOf('\n');
+        return offset > -1 ? searchIndex + offset : -1;
+      } else {
+        return this.domNode.textContent.slice(0, searchIndex).lastIndexOf('\n');
+      }
+    }
+  }, {
+    key: 'optimize',
+    value: function optimize(context) {
+      if (!this.domNode.textContent.endsWith('\n')) {
+        this.appendChild(_parchment2.default.create('text', '\n'));
+      }
+      _get(CodeBlock.prototype.__proto__ || Object.getPrototypeOf(CodeBlock.prototype), 'optimize', this).call(this, context);
+      var next = this.next;
+      if (next != null && next.prev === this && next.statics.blotName === this.statics.blotName && this.statics.formats(this.domNode) === next.statics.formats(next.domNode)) {
+        next.optimize(context);
+        next.moveChildren(this);
+        next.remove();
+      }
+    }
+  }, {
+    key: 'replace',
+    value: function replace(target) {
+      _get(CodeBlock.prototype.__proto__ || Object.getPrototypeOf(CodeBlock.prototype), 'replace', this).call(this, target);
+      [].slice.call(this.domNode.querySelectorAll('*')).forEach(function (node) {
+        var blot = _parchment2.default.find(node);
+        if (blot == null) {
+          node.parentNode.removeChild(node);
+        } else if (blot instanceof _parchment2.default.Embed) {
+          blot.remove();
+        } else {
+          blot.unwrap();
+        }
+      });
+    }
+  }], [{
+    key: 'create',
+    value: function create(value) {
+      var domNode = _get(CodeBlock.__proto__ || Object.getPrototypeOf(CodeBlock), 'create', this).call(this, value);
+      domNode.setAttribute('spellcheck', false);
+      return domNode;
+    }
+  }, {
+    key: 'formats',
+    value: function formats() {
+      return true;
+    }
+  }]);
+
+  return CodeBlock;
+}(_block2.default);
+
+CodeBlock.blotName = 'code-block';
+CodeBlock.tagName = 'PRE';
+CodeBlock.TAB = '  ';
+
+exports.Code = Code;
+exports.default = CodeBlock;
 
 /***/ }),
 /* 18 */
@@ -4700,8 +4712,6 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _parchment = __webpack_require__(0);
 
-var _parchment2 = _interopRequireDefault(_parchment);
-
 var _emitter = __webpack_require__(8);
 
 var _emitter2 = _interopRequireDefault(_emitter);
@@ -4710,13 +4720,9 @@ var _block = __webpack_require__(4);
 
 var _block2 = _interopRequireDefault(_block);
 
-var _break = __webpack_require__(17);
+var _break = __webpack_require__(16);
 
 var _break2 = _interopRequireDefault(_break);
-
-var _code = __webpack_require__(14);
-
-var _code2 = _interopRequireDefault(_code);
 
 var _container = __webpack_require__(30);
 
@@ -4734,22 +4740,18 @@ function isLine(blot) {
   return blot instanceof _block2.default || blot instanceof _block.BlockEmbed;
 }
 
-var Scroll = function (_Parchment$Scroll) {
-  _inherits(Scroll, _Parchment$Scroll);
+var Scroll = function (_ScrollBlot) {
+  _inherits(Scroll, _ScrollBlot);
 
-  function Scroll(domNode, config) {
+  function Scroll(registry, domNode, _ref) {
+    var emitter = _ref.emitter;
+
     _classCallCheck(this, Scroll);
 
-    var _this = _possibleConstructorReturn(this, (Scroll.__proto__ || Object.getPrototypeOf(Scroll)).call(this, domNode));
+    var _this = _possibleConstructorReturn(this, (Scroll.__proto__ || Object.getPrototypeOf(Scroll)).call(this, registry, domNode));
 
-    _this.emitter = config.emitter;
-    if (Array.isArray(config.whitelist)) {
-      _this.whitelist = config.whitelist.reduce(function (whitelist, format) {
-        whitelist[format] = true;
-        return whitelist;
-      }, {});
-    }
-    // Some reason fixes composition issues with character languages in Windows/Chrome, Safari
+    _this.emitter = emitter;
+    _this.batch = false;
     _this.optimize();
     _this.enable();
     return _this;
@@ -4758,13 +4760,26 @@ var Scroll = function (_Parchment$Scroll) {
   _createClass(Scroll, [{
     key: 'batchStart',
     value: function batchStart() {
-      this.batch = true;
+      if (!Array.isArray(this.batch)) {
+        this.batch = [];
+      }
     }
   }, {
     key: 'batchEnd',
     value: function batchEnd() {
+      var mutations = this.batch;
       this.batch = false;
-      this.optimize();
+      this.update(mutations);
+    }
+  }, {
+    key: 'emitMount',
+    value: function emitMount(blot) {
+      this.emitter.emit(_emitter2.default.events.SCROLL_BLOT_MOUNT, blot);
+    }
+  }, {
+    key: 'emitUnmount',
+    value: function emitUnmount(blot) {
+      this.emitter.emit(_emitter2.default.events.SCROLL_BLOT_UNMOUNT, blot);
     }
   }, {
     key: 'deleteAt',
@@ -4784,21 +4799,6 @@ var Scroll = function (_Parchment$Scroll) {
           this.optimize();
           return;
         }
-        if (first instanceof _code2.default) {
-          var newlineIndex = first.newlineIndex(first.length(), true);
-          if (newlineIndex > -1) {
-            first = first.split(newlineIndex + 1);
-            if (first === last) {
-              this.optimize();
-              return;
-            }
-          }
-        } else if (last instanceof _code2.default) {
-          var _newlineIndex = last.newlineIndex(0);
-          if (_newlineIndex > -1) {
-            last.split(_newlineIndex + 1);
-          }
-        }
         var ref = last.children.head instanceof _break2.default ? null : last.children.head;
         first.moveChildren(last, ref);
         first.remove();
@@ -4815,24 +4815,23 @@ var Scroll = function (_Parchment$Scroll) {
   }, {
     key: 'formatAt',
     value: function formatAt(index, length, format, value) {
-      if (this.whitelist != null && !this.whitelist[format]) return;
       _get(Scroll.prototype.__proto__ || Object.getPrototypeOf(Scroll.prototype), 'formatAt', this).call(this, index, length, format, value);
       this.optimize();
     }
   }, {
     key: 'insertAt',
     value: function insertAt(index, value, def) {
-      if (def != null && this.whitelist != null && !this.whitelist[value]) return;
       if (index >= this.length()) {
-        if (def == null || _parchment2.default.query(value, _parchment2.default.Scope.BLOCK) == null) {
-          var blot = _parchment2.default.create(this.statics.defaultChild);
+        if (def == null || this.scroll.query(value, _parchment.Scope.BLOCK) == null) {
+          var blot = this.scroll.create(this.statics.defaultChild.blotName);
           this.appendChild(blot);
           if (def == null && value.endsWith('\n')) {
-            value = value.slice(0, -1);
+            blot.insertAt(0, value.slice(0, -1), def);
+          } else {
+            blot.insertAt(0, value, def);
           }
-          blot.insertAt(0, value, def);
         } else {
-          var embed = _parchment2.default.create(value, def);
+          var embed = this.scroll.create(value, def);
           this.appendChild(embed);
         }
       } else {
@@ -4843,12 +4842,18 @@ var Scroll = function (_Parchment$Scroll) {
   }, {
     key: 'insertBefore',
     value: function insertBefore(blot, ref) {
-      if (blot.statics.scope === _parchment2.default.Scope.INLINE_BLOT) {
-        var wrapper = _parchment2.default.create(this.statics.defaultChild);
+      if (blot.statics.scope === _parchment.Scope.INLINE_BLOT) {
+        var wrapper = this.scroll.create(this.statics.defaultChild.blotName);
         wrapper.appendChild(blot);
-        blot = wrapper;
+        _get(Scroll.prototype.__proto__ || Object.getPrototypeOf(Scroll.prototype), 'insertBefore', this).call(this, wrapper, ref);
+      } else {
+        _get(Scroll.prototype.__proto__ || Object.getPrototypeOf(Scroll.prototype), 'insertBefore', this).call(this, blot, ref);
       }
-      _get(Scroll.prototype.__proto__ || Object.getPrototypeOf(Scroll.prototype), 'insertBefore', this).call(this, blot, ref);
+    }
+  }, {
+    key: 'isEnabled',
+    value: function isEnabled() {
+      return this.domNode.getAttribute('contenteditable') === 'true';
     }
   }, {
     key: 'leaf',
@@ -4869,16 +4874,16 @@ var Scroll = function (_Parchment$Scroll) {
       var index = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
       var length = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : Number.MAX_VALUE;
 
-      var getLines = function getLines(blot, index, length) {
-        var lines = [],
-            lengthLeft = length;
-        blot.children.forEachAt(index, length, function (child, index, length) {
+      var getLines = function getLines(blot, blotIndex, blotLength) {
+        var lines = [];
+        var lengthLeft = blotLength;
+        blot.children.forEachAt(blotIndex, blotLength, function (child, childIndex, childLength) {
           if (isLine(child)) {
             lines.push(child);
-          } else if (child instanceof _parchment2.default.Container) {
-            lines = lines.concat(getLines(child, index, lengthLeft));
+          } else if (child instanceof _parchment.ContainerBlot) {
+            lines = lines.concat(getLines(child, childIndex, lengthLeft));
           }
-          lengthLeft -= length;
+          lengthLeft -= childLength;
         });
         return lines;
       };
@@ -4890,7 +4895,7 @@ var Scroll = function (_Parchment$Scroll) {
       var mutations = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
       var context = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
-      if (this.batch === true) return;
+      if (this.batch) return;
       _get(Scroll.prototype.__proto__ || Object.getPrototypeOf(Scroll.prototype), 'optimize', this).call(this, mutations, context);
       if (mutations.length > 0) {
         this.emitter.emit(_emitter2.default.events.SCROLL_OPTIMIZE, mutations, context);
@@ -4902,9 +4907,19 @@ var Scroll = function (_Parchment$Scroll) {
       return _get(Scroll.prototype.__proto__ || Object.getPrototypeOf(Scroll.prototype), 'path', this).call(this, index).slice(1); // Exclude self
     }
   }, {
+    key: 'remove',
+    value: function remove() {
+      // Never remove self
+    }
+  }, {
     key: 'update',
     value: function update(mutations) {
-      if (this.batch === true) return;
+      if (this.batch) {
+        if (Array.isArray(mutations)) {
+          this.batch = this.batch.concat(mutations);
+        }
+        return;
+      }
       var source = _emitter2.default.sources.USER;
       if (typeof mutations === 'string') {
         source = mutations;
@@ -4923,12 +4938,12 @@ var Scroll = function (_Parchment$Scroll) {
   }]);
 
   return Scroll;
-}(_parchment2.default.Scroll);
+}(_parchment.ScrollBlot);
 
 Scroll.blotName = 'scroll';
 Scroll.className = 'ql-editor';
 Scroll.tagName = 'DIV';
-Scroll.defaultChild = 'block';
+Scroll.defaultChild = _block2.default;
 Scroll.allowedChildren = [_block2.default, _block.BlockEmbed, _container2.default];
 
 exports.default = Scroll;
@@ -5853,7 +5868,7 @@ var _block = __webpack_require__(4);
 
 var _block2 = _interopRequireDefault(_block);
 
-var _break = __webpack_require__(17);
+var _break = __webpack_require__(16);
 
 var _break2 = _interopRequireDefault(_break);
 
@@ -9444,7 +9459,7 @@ var _align = __webpack_require__(49);
 
 var _background = __webpack_require__(50);
 
-var _code = __webpack_require__(14);
+var _code = __webpack_require__(17);
 
 var _code2 = _interopRequireDefault(_code);
 
